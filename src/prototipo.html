@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galinheiro Tech - Monitoramento</title>
+    <style>
+        :root {
+            --ceu: #bde0fe;
+            --grama: #38b000;
+            --madeira: #8a4a1d;
+            --madeira-escura: #5d2e0a;
+            --telhado: #3d2b1f;
+            --montanha: #6c757d; /* Cor para as montanhas */
+        }
+
+        body, html { margin: 0; padding: 0; height: 100%; font-family: sans-serif; overflow: hidden; }
+
+        /* --- CENÁRIO --- */
+        .cenario {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            background: linear-gradient(to bottom, var(--ceu) 0%, var(--ceu) 70%, var(--grama) 70%, var(--grama) 100%);
+        }
+
+        /* Nuvens */
+        .nuvem {
+            position: absolute;
+            background: white;
+            width: 100px;
+            height: 40px;
+            border-radius: 50px;
+            opacity: 0.8;
+            animation: moverNuvem 30s linear infinite;
+        }
+        @keyframes moverNuvem { from { left: -100px; } to { left: 100%; } }
+
+        /* --- MONTANHAS (ATRÁS DA CERCA E GALINHEIRO) --- */
+        .montanhas {
+            position: absolute;
+            bottom: 30%; /* Ajuste para ficarem acima da grama */
+            left: 0;
+            width: 100%;
+            height: 150px;
+            z-index: 0; /* Atrás de tudo */
+        }
+
+        .montanha {
+            position: absolute;
+            bottom: 0;
+            background-color: var(--montanha);
+            border-radius: 50% 50% 0 0 / 100% 100% 0 0; /* Formato arredondado */
+        }
+
+        .montanha-1 {
+            width: 300px;
+            height: 200px;
+            left: 10%;
+        }
+
+        .montanha-2 {
+            width: 400px;
+            height: 150px;
+            left: 40%;
+            background-color: color-mix(in srgb, var(--montanha) 80%, black); /* Tom mais escuro para profundidade */
+        }
+
+        .montanha-3 {
+            width: 250px;
+            height: 100px;
+            left: 75%;
+        }
+
+
+        /* --- CERCA (ATRAS DO GALINHEIRO) --- */
+        .cerca-background {
+            position: absolute;
+            bottom: 26%;
+            width: 100%;
+            height: 60px;
+            background-image: repeating-linear-gradient(90deg, #d1ccc0 0px, #d1ccc0 15px, transparent 15px, transparent 60px);
+            border-top: 25px solid #d1ccc0;
+            z-index: 1; /* Na frente das montanhas */
+        }
+
+        /* --- GALINHEIRO (FRENTE) --- */
+        .galinheiro-container {
+            position: absolute;
+            bottom: 15%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 500px;
+            height: 350px;
+            z-index: 10; /* Na frente da cerca e montanhas */
+        }
+
+        .corpo-galinheiro {
+            position: absolute;
+            bottom: 80px;
+            width: 100%;
+            height: 220px;
+            background: var(--madeira);
+            border: 2px solid var(--madeira-escura);
+            background-image: repeating-linear-gradient(0deg, transparent, transparent 24px, rgba(0,0,0,0.1) 25px);
+        }
+
+        .telhado {
+            position: absolute;
+            top: 10px;
+            left: -10px;
+            width: 520px;
+            height: 40px;
+            background: var(--telhado);
+            border-radius: 5px;
+        }
+
+        .janela {
+            position: absolute;
+            top: 30px;
+            left: 40px;
+            width: 100px;
+            height: 70px;
+            background: #333;
+            border: 3px solid var(--madeira-escura);
+        }
+
+
+        .porta {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90px;
+            height: 150px;
+            background: var(--telhado);
+            border: 4px solid var(--telhado);
+            border-bottom: none;
+            background-image: repeating-linear-gradient(0deg, #a31f1f 0px, #b91515 5px, transparent 5px, transparent 20px);
+        }
+
+
+        .escada {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 110px;
+            height: 80px;
+            background: var(--madeira-escura);
+            clip-path: polygon(20% 10%, 80% 10%, 100% 100%, 0% 100%);
+            background-image: repeating-linear-gradient(0deg, #4d2607 0px, #4d2607 5px, transparent 5px, transparent 20px);
+        }
+
+        .pe-galinheiro {
+            position: absolute;
+            bottom: 20px;
+            width: 35px;
+            height: 85px;
+            background: var(--madeira-escura);
+        }
+
+        /* --- GALINHAS --- */
+        .galinha {
+            position: absolute;
+            bottom: 10%;
+            font-size: 55px;
+            z-index: 20;
+            animation: andar 10s infinite linear;
+        }
+        .galinha2 {
+            position: absolute;
+            bottom: 5%;
+            font-size: 35px;
+            z-index: 20;
+            animation: andar 10s infinite linear;
+        }
+        .galinha .pernas { font-size: 15px; color: orange; margin-top: -15px; text-align: center; }
+
+        @keyframes andar {
+            0% { left: -50px; transform: scaleX(-1); }
+            45% { left: 45%; transform: scaleX(-1); }
+            55% { left: 45%; transform: scaleX(-1); }
+            100% { left: 110%; transform: scaleX(-1); }
+        }
+        
+
+        /* --- PAINEL DE CONTROLE --- */
+        .painel {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 250px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            z-index: 100;
+        }
+        .sensor { display: flex; justify-content: space-between; margin-bottom: 8px; font-weight: bold; }
+        .valor { color: #007bff; }
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #38b000;
+            border: none;
+            color: white;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover { background: #2d8f00; }
+    </style>
+</head>
+<body>
+
+    <div class="cenario">
+        <div class="nuvem" style="top:10%; animation-duration: 20s;"></div>
+        <div class="nuvem" style="top:20%; animation-duration: 35s; animation-delay: -5s;"></div>
+
+        <div class="montanhas">
+            <div class="montanha montanha-1"></div>
+            <div class="montanha montanha-2"></div>
+            <div class="montanha montanha-3"></div>
+        </div>
+
+        <div class="painel">
+            <h3 style="margin: 0 0 15px 0; text-align: center;">📊 Sensores</h3>
+            <div class="sensor"><span>🌡️ Temp:</span> <span class="valor" id="t">24.5°C</span></div>
+            <div class="sensor"><span>💧 Umid:</span> <span class="valor" id="u">62%</span></div>
+            <div class="sensor"><span>🚶 Movim:</span> <span class="valor" id="m">Não</span></div>
+            <div class="sensor"><span>💨 Gás:</span> <span class="valor" id="g">Baixo</span></div>
+            <div class="sensor"><span>🚰 Água:</span> <span class="valor" id="a">75%</span></div>
+            <div id="alerta" style="color: green; text-align: center; margin: 10px 0;">✔ Tudo OK</div>
+            <button onclick="lerSensores()">Nova Leitura</button>
+        </div>
+
+        <div class="cerca-background"></div>
+
+        <div class="galinheiro-container">
+            <div class="telhado"></div>
+            <div class="pe-galinheiro" style="left: 40px;"></div>
+            <div class="pe-galinheiro" style="right: 40px;"></div>
+            
+            <div class="corpo-galinheiro">
+                <div class="janela"></div>
+                <div class="porta"></div>
+            </div>
+            
+            <div class="escada"></div>
+        </div>
+
+        <div class="galinha" style="animation-delay: 0s;">🐓<div class="pernas"></div></div>
+        <div class="galinha2" style="animation-delay: 2s;">🐔<div class="pernas"></div></div>
+        <div class="galinha" style="bottom: 2%; animation-delay: 4s;">🐥<div class="pernas"></div></div>
+    </div>
+
+    <script>
+        function lerSensores() {
+            const temp = (Math.random() * 10 + 20).toFixed(1);
+            const umid = Math.floor(Math.random() * 30 + 50);
+            const agua = Math.floor(Math.random() * 100);
+            const mov = Math.random() > 0.1 ? "SIM" : "Não";
+
+            document.getElementById('t').innerText = temp + "°C";
+            document.getElementById('u').innerText = umid + "%";
+            document.getElementById('a').innerText = agua + "%";
+            document.getElementById('m').innerText = mov;
+
+            const alerta = document.getElementById('alerta');
+            if(temp > 29) {
+                alerta.innerText = "🚨 ALERTA: Calor!";
+                alerta.style.color = "red";
+            } else {
+                alerta.innerText = "✔ Tudo OK";
+                alerta.style.color = "green";
+            }
+        }
+    </script>
+</body>
+</html>
